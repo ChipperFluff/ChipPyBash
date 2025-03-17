@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Define the paths
+CUSTOM_PYTHON_DIR="$(pwd)/MyPython"
+VENV_DIR="$(pwd)/MyPythonEnv"
+
+# Ensure Python is installed
+if [ ! -f "$CUSTOM_PYTHON_DIR/bin/python3" ]; then
+    echo "❌ Error: Custom Python not found in $CUSTOM_PYTHON_DIR"
+    echo "👉 Run the install script first: ./install.sh"
+    exit 1
+fi
+
+# Check if virtual environment already exists
+if [ -d "$VENV_DIR" ]; then
+    echo "✅ Virtual environment already exists at $VENV_DIR"
+    echo "👉 To activate, run: source $VENV_DIR/bin/activate"
+    exit 0
+fi
+
+# Create the virtual environment
+echo "🚀 Creating virtual environment in: $VENV_DIR"
+"$CUSTOM_PYTHON_DIR/bin/python3" -m venv "$VENV_DIR"
+
+echo "✅ Virtual environment created."
+echo "👉 To activate, run: source $VENV_DIR/bin/activate"

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Set up working directory for custom Python
+INSTALL_DIR=$(pwd)/MyPython
+PYTHON_VERSION="3.12.0"
+PYTHON_SRC="Python-$PYTHON_VERSION"
+NUM_CORES=$(nproc)
+
+# Check if the Python source directory exists
+if [ ! -d "$PYTHON_SRC" ]; then
+    echo "🚀 Downloading Python $PYTHON_VERSION..."
+    wget https://www.python.org/ftp/python/$PYTHON_VERSION/$PYTHON_SRC.tgz
+    tar -xvzf $PYTHON_SRC.tgz
+else
+    echo "✅ Python source already exists. Skipping download."
+fi
+
+# Move into the source directory
+cd $PYTHON_SRC
+
+echo "🚀 Configuring Python installation at: $INSTALL_DIR"
+
+# Configure, compile, and install Python
+./configure --prefix="$INSTALL_DIR"
+make -j"$NUM_CORES"
+make install
+
+echo "✅ Custom Python installed in: $INSTALL_DIR"
+
+# Return to original directory
+cd ..
